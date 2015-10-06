@@ -36,6 +36,12 @@ class mongodb::repo (
     'Debian': {
       if ($repo_location != undef){
         $location = $repo_location
+      } elsif (versioncmp($version, '3.0.0') >= 0) {
+        $location = $::operatingsystem ? {
+          'Debian' => 'http://repo.mongodb.org/apt/debian',
+          'Ubuntu' => 'http://repo.mongodb.org/apt/ubuntu',
+          default  => undef
+        }
       }else{
         $location = $::operatingsystem ? {
           'Debian' => 'http://downloads-distro.mongodb.org/repo/debian-sysvinit',
